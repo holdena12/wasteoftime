@@ -111,6 +111,10 @@ while True:
                     gameover = False
                     time = 0
                     flyingClock = FlyingClock()
+                    score = 0
+                    minSpeed = 3
+                    maxSpeed = 5
+                    fallingvel = 5
 
 
     if gameover == True:
