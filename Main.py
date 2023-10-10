@@ -5,18 +5,20 @@ import sys
 pygame.init()
 clock = pygame.time.Clock()
 #set up screen
-windowy=1000
-windowx=1500
+windowy=500
+windowx=1000
 objectsizey = 50
 objectsizex = 93
 
-
+trashsizex = windowx /3
+trashsizey = windowy /5
 trashimg = pygame.image.load("Trash.png")
 objectimg = pygame.image.load("Clock.png")
+trashimg = pygame.transform.scale(trashimg,(trashsizex,trashsizey))
 objectimg = pygame.transform.scale(objectimg,(objectsizex,objectsizey))
 screen = pygame.display.set_mode([windowx,windowy])
-trashx = 550
-trashy = 800
+trashx = (windowx - trashsizex)/2
+trashy = windowy - trashsizey
 down_pressed = False
 
 score = 0
@@ -35,7 +37,7 @@ class FlyingClock:
    
 
     def __init__(self):
-        self.y = 350
+        self.y = windowy/2
         rand = random.randint(0,1)
         if rand == 1:
             self.x = 0
@@ -121,7 +123,7 @@ while True:
         continue
     
     #TODO: change this to a function.  check to see if clock is thrown away
-    if flyingClock.x > trashx and flyingClock.x < trashx +400 and flyingClock.y > trashy and flyingClock.y < trashy + 200:
+    if flyingClock.x > trashx and flyingClock.x < trashx +trashsizex and flyingClock.y > trashy and flyingClock.y < trashy + trashsizey:
         score +=1
         print(score)
         down_pressed = False
@@ -136,7 +138,9 @@ while True:
         vel = random.randint(minSpeed,maxSpeed)
         if vel < 3:
             vel = 3
-         
+    if flyingClock.direction == 1:
+        if flyingClock.y > windowy:
+            isGameOver(flyingClock)
     if down_pressed == True:
         flyingClock.moveDown(fallingvel)
     else:
