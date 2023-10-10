@@ -77,10 +77,7 @@ textRect.center = (0, 25)
 time = 0
 def printObjectData(flyingClock):
     print("TrasCan: ", trashx, ",", trashy, " object: ", flyingClock.x, ",", flyingClock.y)
-
-# runs the end game logic
-def isGameOver(flyingClock):
-    if flyingClock.x <0 or flyingClock.y > 1000:
+def triggerGameOver():
         screen.fill((0,0,0))
         text2 = font.render('GaMe OvEr', True,(255,0,0))
         textRect2 = text2.get_rect()
@@ -88,9 +85,22 @@ def isGameOver(flyingClock):
         screen.blit(text2,textRect2)
         screen.blit(text,textRect)
         gameover = True
+# runs the end game logic
+def checkGameOver(flyingClock):
+    
+
+        
+    
+    if flyingClock.direction == 1 and flyingClock.y > windowy:
+        triggerGameOver()
         return True
-    else:
-        return False
+    
+        
+    if flyingClock.x < 0 or flyingClock.y > windowy:
+        triggerGameOver()
+        return True
+    
+    return False
 
 #game loop
 loopCount = 0
@@ -140,7 +150,7 @@ while True:
             vel = 3
     if flyingClock.direction == 1:
         if flyingClock.y > windowy:
-            isGameOver(flyingClock)
+            checkGameOver(flyingClock)
     if down_pressed == True:
         flyingClock.moveDown(fallingvel)
     else:
@@ -148,7 +158,7 @@ while True:
     
     time = time+0.01
     
-    if isGameOver(flyingClock) == False:
+    if checkGameOver(flyingClock) == False:
         screen.fill((0,0,225))
         if loopCount % 100 == 0:
             printObjectData(flyingClock)
@@ -160,7 +170,7 @@ while True:
         screen.blit(trashimg,(trashx,trashy))
     else:
         gameover = True
-        isGameOver(flyingClock)
+        checkGameOver(flyingClock)
     pygame.display.flip()
     clock.tick(100)
         
