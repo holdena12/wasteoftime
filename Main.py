@@ -5,8 +5,8 @@ import sys
 pygame.init()
 clock = pygame.time.Clock()
 #set up screen
-windowy=500
-windowx=1000
+windowy=750
+windowx=1250
 objectsizey = 50
 objectsizex = 93
 
@@ -43,7 +43,7 @@ class FlyingClock:
             self.x = 0
             self.direction = 1
         else:
-            self.x = 1475
+            self.x = windowx
             self.direction = -1
     
     def updateXPostion(self, vel):
@@ -55,6 +55,8 @@ class FlyingClock:
     def draw(self):
         if gameover == False:
             screen.blit(objectimg,(self.x,self.y))
+   
+
     
 
 # define the RGB value for white,
@@ -62,7 +64,7 @@ class FlyingClock:
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
-
+level = 1
 # create a text surface object,
 # on which text is drawn on it.
 text = font.render('', True, green, blue)
@@ -77,13 +79,17 @@ textRect.center = (0, 25)
 time = 0
 def printObjectData(flyingClock):
     print("TrasCan: ", trashx, ",", trashy, " object: ", flyingClock.x, ",", flyingClock.y)
-def triggerGameOver():
+def triggerGameOver(minSpeed,maxSpeed,fallingVel):
         screen.fill((0,0,0))
         text2 = font.render('GaMe OvEr', True,(255,0,0))
         textRect2 = text2.get_rect()
         textRect2.center = (windowx // 2, windowy // 2)
         screen.blit(text2,textRect2)
         screen.blit(text,textRect)
+        minSpeed = 3
+        maxSpeed = 5
+
+        fallingvel = 5
         gameover = True
 # runs the end game logic
 def checkGameOver(flyingClock):
@@ -92,19 +98,30 @@ def checkGameOver(flyingClock):
         
     
     if flyingClock.direction == 1 and flyingClock.y > windowy:
-        triggerGameOver()
+        triggerGameOver(minSpeed,maxSpeed, fallingvel)
         return True
     
         
     if flyingClock.x < 0 or flyingClock.y > windowy:
-        triggerGameOver()
+        triggerGameOver(minSpeed,maxSpeed,fallingvel)
         return True
     
     return False
-
+text3 = font.render('Level: {level} ', True,(255,0,0))
+textRect3 = text3.get_rect()
+textRect3.center = (25 , windowx - 100)
+screen.blit(text3,textRect3)
 #game loop
 loopCount = 0
 flyingClock = FlyingClock()
+def increase_game_speed(minSpeed,maxSpeed,fallingvel):
+    minSpeed = minSpeed+3
+    maxSpeed = maxSpeed+3
+    fallingvel = fallingvel+3
+def levelup(level):
+    if score % 5 == 0:
+        level += 1
+        increase_game_speed(minSpeed,maxSpeed,fallingvel)
 
 while True:
     
@@ -114,7 +131,7 @@ while True:
              pygame.display.quit(), sys.exit()
         keys = pygame.key.get_pressed()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_SPACE:
               down_pressed = True
         if gameover == True:
             if event.type == pygame.KEYDOWN:
@@ -138,11 +155,12 @@ while True:
         print(score)
         down_pressed = False
         flyingClock = FlyingClock()
+        levelup(level)
         #TODO: this should be a member variable of FlyingClock
         
-        minSpeed = minSpeed * 1.2
-        maxSpeed = maxSpeed * 1.2
-        fallingvel = fallingvel * 1.1
+       # minSpeed = minSpeed * 1.2
+       # maxSpeed = maxSpeed * 1.2
+       # fallingvel = fallingvel * 1.1
         minSpeed = int(minSpeed)
         maxSpeed = int(maxSpeed)
         vel = random.randint(minSpeed,maxSpeed)
