@@ -3,6 +3,7 @@ from pygame import mixer
 import random
 import sys
 mixer.init()
+
 pygame.init()
 clock = pygame.time.Clock()
 #set up screen
@@ -149,7 +150,7 @@ while True:
 
     if gameover == True:
         continue
-    
+    mixer.music.load()
     #TODO: change this to a function.  check to see if clock is thrown away
     if flyingClock.x > trashx and flyingClock.x < trashx +trashsizex and flyingClock.y > trashy and flyingClock.y < trashy + trashsizey:
         score +=1
