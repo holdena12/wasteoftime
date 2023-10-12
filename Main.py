@@ -150,7 +150,9 @@ while True:
 
     if gameover == True:
         continue
-    mixer.music.load()
+    mixer.music.load("Music.mp3")
+    mixer.music.set_volume(0.5)
+    mixer.music.play()
     #TODO: change this to a function.  check to see if clock is thrown away
     if flyingClock.x > trashx and flyingClock.x < trashx +trashsizex and flyingClock.y > trashy and flyingClock.y < trashy + trashsizey:
         score +=1
