@@ -74,7 +74,9 @@ text = font.render('', True, green, blue)
 # create a rectangular object for the
 # text surface object
 textRect = text.get_rect()
- 
+mixer.music.load("Music.mp3")
+mixer.music.set_volume(0.5)
+mixer.music.play() 
 # set the center of the rectangular object.
 textRect.center = (0, 25)
 
@@ -117,13 +119,15 @@ screen.blit(text3,textRect3)
 loopCount = 0
 flyingClock = FlyingClock()
 def increase_game_speed(minSpeed,maxSpeed,fallingvel):
-    minSpeed = minSpeed+3
-    maxSpeed = maxSpeed+3
-    fallingvel = fallingvel+3
+    minSpeed = minSpeed*10
+    maxSpeed = maxSpeed*10
+    fallingvel = fallingvel*1.5
+    vel = random.randint(minSpeed,maxSpeed)
+    
 def levelup(level):
     if score % 5 == 0:
         level += 1
-        increase_game_speed(minSpeed,maxSpeed,fallingvel)
+        
 
 while True:
     
@@ -150,24 +154,23 @@ while True:
 
     if gameover == True:
         continue
-    mixer.music.load("Music.mp3")
-    mixer.music.set_volume(0.5)
-    mixer.music.play()
+    
     #TODO: change this to a function.  check to see if clock is thrown away
     if flyingClock.x > trashx and flyingClock.x < trashx +trashsizex and flyingClock.y > trashy and flyingClock.y < trashy + trashsizey:
         score +=1
         print(score)
         down_pressed = False
         flyingClock = FlyingClock()
+        increase_game_speed(minSpeed,maxSpeed,fallingvel)
         levelup(level)
         #TODO: this should be a member variable of FlyingClock
         
        # minSpeed = minSpeed * 1.2
        # maxSpeed = maxSpeed * 1.2
        # fallingvel = fallingvel * 1.1
-        minSpeed = int(minSpeed)
-        maxSpeed = int(maxSpeed)
-        vel = random.randint(minSpeed,maxSpeed)
+       
+        
+        print({minSpeed},{maxSpeed})
         if vel < 3:
             vel = 3
     if flyingClock.direction == 1:
