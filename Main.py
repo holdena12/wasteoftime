@@ -1,7 +1,8 @@
 import pygame
+from pygame import mixer
 import random
 import sys
-
+mixer.init()
 pygame.init()
 clock = pygame.time.Clock()
 #set up screen
