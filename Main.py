@@ -3,7 +3,8 @@ from pygame import mixer
 import random
 import sys
 mixer.init()
-
+ORIGMINSPEED = 3
+ORIGMAXSPEED = 5
 pygame.init()
 clock = pygame.time.Clock()
 #set up screen
@@ -12,11 +13,13 @@ windowx=1250
 objectsizey = 50
 objectsizex = 93
 
-trashsizex = windowx /3
+trashsizex = windowx /5
 trashsizey = windowy /5
-trashimg = pygame.image.load("Trash.png")
+trashimg1 = pygame.image.load("Garbage bin-2.png")
+trashimg2 = pygame.image.load("Garbage Bin.png")
 objectimg = pygame.image.load("Clock.png")
-trashimg = pygame.transform.scale(trashimg,(trashsizex,trashsizey))
+trashimg1 = pygame.transform.scale(trashimg1,(trashsizex,trashsizey))
+trashimg2 = pygame.transform.scale(trashimg2,(trashsizex,trashsizey))
 objectimg = pygame.transform.scale(objectimg,(objectsizex,objectsizey))
 screen = pygame.display.set_mode([windowx,windowy])
 trashx = (windowx - trashsizex)/2
@@ -24,8 +27,8 @@ trashy = windowy - trashsizey
 down_pressed = False
 
 score = 0
-minSpeed = 3
-maxSpeed = 5
+minSpeed = ORIGMINSPEED 
+maxSpeed = ORIGMAXSPEED
 pygame.display.set_caption('Waste of Time')
 font = pygame.font.Font('freesansbold.ttf', 32)
 vel = 3
@@ -118,11 +121,7 @@ screen.blit(text3,textRect3)
 #game loop
 loopCount = 0
 flyingClock = FlyingClock()
-def increase_game_speed(minSpeed,maxSpeed,fallingvel):
-    minSpeed = minSpeed*10
-    maxSpeed = maxSpeed*10
-    fallingvel = fallingvel*1.5
-    vel = random.randint(minSpeed,maxSpeed)
+
     
 def levelup(level):
     if score % 5 == 0:
@@ -141,14 +140,14 @@ while True:
               down_pressed = True
         if gameover == True:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
+                if event.key == pygame.K_SPACE:
                     down_pressed = False
                     gameover = False
                     time = 0
                     flyingClock = FlyingClock()
                     score = 0
-                    minSpeed = 3
-                    maxSpeed = 5
+                    minSpeed = ORIGMINSPEED 
+                    maxSpeed = ORIGMAXSPEED 
                     fallingvel = 5
 
 
@@ -161,13 +160,15 @@ while True:
         print(score)
         down_pressed = False
         flyingClock = FlyingClock()
-        increase_game_speed(minSpeed,maxSpeed,fallingvel)
+        
         levelup(level)
         #TODO: this should be a member variable of FlyingClock
         
-       # minSpeed = minSpeed * 1.2
-       # maxSpeed = maxSpeed * 1.2
-       # fallingvel = fallingvel * 1.1
+        minSpeed = minSpeed * 1.1
+        maxSpeed = maxSpeed * 1.1
+        fallingvel = fallingvel * 1.1
+        
+        vel = random.uniform(minSpeed,maxSpeed)
        
         
         print({minSpeed},{maxSpeed})
@@ -191,8 +192,11 @@ while True:
         timeStr = "%.2f" % time
         text = font.render(timeStr,True,(255,255,255))
         screen.blit(text,textRect)
+        
+        screen.blit(trashimg1,(trashx,trashy))
         flyingClock.draw()
-        screen.blit(trashimg,(trashx,trashy))
+        screen.blit(trashimg2,(trashx,trashy))
+
     else:
         gameover = True
         checkGameOver(flyingClock)
