@@ -14,9 +14,9 @@ objectsizey = 50
 objectsizex = 93
 
 trashsizex = windowx /5
-trashsizey = windowy /5
+trashsizey = windowy /3
 trashimg1 = pygame.image.load("Garbage bin-2.png")
-trashimg2 = pygame.image.load("Garbage Bin.png")
+trashimg2 = pygame.image.load("Trash front.png")
 objectimg = pygame.image.load("Clock.png")
 trashimg1 = pygame.transform.scale(trashimg1,(trashsizex,trashsizey))
 trashimg2 = pygame.transform.scale(trashimg2,(trashsizex,trashsizey))
